@@ -86,13 +86,13 @@ function Home() {
     }
   };
 
- const handleCommand = (data) => {
+const handleCommand = (data) => {
   const { type, userInput, response } = data;
 
   const openInNewTab = (url) => {
     setTimeout(() => {
       window.open(url, '_blank');
-    }, 1500);
+    }, 1500); // Let speech finish
   };
 
   const now = new Date();
@@ -101,33 +101,53 @@ function Home() {
   const day = now.toLocaleDateString('en-IN', { weekday: 'long' });
   const month = now.toLocaleDateString('en-IN', { month: 'long' });
 
-  switch (type) {
-    case 'get-time':
-      const timeResponse = `The current time is ${time}`;
-      speak(timeResponse);
-      setAiText(timeResponse);
-      break;
-    case 'get-date':
-      const dateResponse = `Today's date is ${date}`;
-      speak(dateResponse);
-      setAiText(dateResponse);
-      break;
-    case 'get-day':
-      const dayResponse = `Today is ${day}`;
-      speak(dayResponse);
-      setAiText(dayResponse);
-      break;
-    case 'get-month':
-      const monthResponse = `Current month is ${month}`;
-      speak(monthResponse);
-      setAiText(monthResponse);
-      break;
-    default:
-      speak(response);
-      setAiText(response); // use Gemini's response only if it's not a date/time type
+  if (type === 'get-time') {
+    const timeText = `The current time is ${time}`;
+    speak(timeText);
+    setAiText(timeText); // ✅ correct text on screen
+    return;
   }
-};
 
+  if (type === 'get-date') {
+    const dateText = `Today's date is ${date}`;
+    speak(dateText);
+    setAiText(dateText);
+    return;
+  }
+
+  if (type === 'get-day') {
+    const dayText = `Today is ${day}`;
+    speak(dayText);
+    setAiText(dayText);
+    return;
+  }
+
+  if (type === 'get-month') {
+    const monthText = `Current month is ${month}`;
+    speak(monthText);
+    setAiText(monthText);
+    return;
+  }
+
+  // Other commands that open tabs
+  if (type === 'google-search') {
+    openInNewTab(`https://www.google.com/search?q=${encodeURIComponent(userInput)}`);
+  } else if (type === 'calculator-open') {
+    openInNewTab(`https://www.google.com/search?q=calculator`);
+  } else if (type === 'instagram-open') {
+    openInNewTab(`https://www.instagram.com/`);
+  } else if (type === 'facebook-open') {
+    openInNewTab(`https://www.facebook.com/`);
+  } else if (type === 'weather-show') {
+    openInNewTab(`https://www.google.com/search?q=weather`);
+  } else if (type === 'youtube-search' || type === 'youtube-play') {
+    openInNewTab(`https://www.youtube.com/results?search_query=${encodeURIComponent(userInput)}`);
+  }
+
+  // ✅ default/general response from Gemini (non-time-related)
+  speak(response);
+  setAiText(response);
+};
 
   const startAssistant = () => {
     setAssistantStarted(true);
