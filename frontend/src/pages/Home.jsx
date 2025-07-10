@@ -108,7 +108,31 @@ function Home() {
     openInNewTab(`https://www.google.com/search?q=weather`);
   } else if (type === 'youtube-search' || type === 'youtube-play') {
     openInNewTab(`https://www.youtube.com/results?search_query=${encodeURIComponent(userInput)}`);
+
   }
+  else if (type === 'get-time') {
+  const now = new Date();
+  const time = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+  speak(`The current time is ${time}`);
+} else if (type === 'get-date') {
+  const now = new Date();
+  const date = now.toLocaleDateString('en-IN');
+  speak(`Today's date is ${date}`);
+} else if (type === 'get-day') {
+  const now = new Date();
+  const day = now.toLocaleDateString('en-IN', { weekday: 'long' });
+  speak(`Today is ${day}`);
+} else if (type === 'get-month') {
+  const now = new Date();
+  const month = now.toLocaleDateString('en-IN', { month: 'long' });
+  speak(`The current month is ${month}`);
+} else if (type === 'get-year') {
+  const now = new Date();
+  const year = now.getFullYear();
+  speak(`The current year is ${year}`);
+}
+
+
 };
 
   const startAssistant = () => {
