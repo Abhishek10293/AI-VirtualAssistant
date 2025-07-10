@@ -92,7 +92,7 @@ const handleCommand = (data) => {
   const openInNewTab = (url) => {
     setTimeout(() => {
       window.open(url, '_blank');
-    }, 1500); // Let speech finish
+    }, 1500);
   };
 
   const now = new Date();
@@ -104,8 +104,8 @@ const handleCommand = (data) => {
   if (type === 'get-time') {
     const timeText = `The current time is ${time}`;
     speak(timeText);
-    setAiText(timeText); // ✅ correct text on screen
-    return;
+    setAiText(timeText);
+    return; // ✅ prevents fallback overwrite
   }
 
   if (type === 'get-date') {
@@ -129,7 +129,7 @@ const handleCommand = (data) => {
     return;
   }
 
-  // Other commands that open tabs
+  // Open web pages
   if (type === 'google-search') {
     openInNewTab(`https://www.google.com/search?q=${encodeURIComponent(userInput)}`);
   } else if (type === 'calculator-open') {
@@ -144,10 +144,11 @@ const handleCommand = (data) => {
     openInNewTab(`https://www.youtube.com/results?search_query=${encodeURIComponent(userInput)}`);
   }
 
-  // ✅ default/general response from Gemini (non-time-related)
+  // ✅ Final fallback (for general responses)
   speak(response);
   setAiText(response);
 };
+
 
   const startAssistant = () => {
     setAssistantStarted(true);
